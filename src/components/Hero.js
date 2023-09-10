@@ -3,12 +3,11 @@ import React from "react";
 import { Button } from './Button';
 import '../App.css';
 import './Hero.css';
-import videos from '../videos/nurburgringDrive.mp4';
 
 function Hero() {
     return (
         <div className="hero-container">
-            <video src={videos} autoPlay loop muted />
+            <video src='/videos/nurburgringDrive.mp4' autoPlay loop muted />
             <h1>THIS COULD BE YOU!</h1>
             <p>What are you waiting for?</p>
             <div className="hero-btns">
