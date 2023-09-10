@@ -12,8 +12,8 @@ function Cards() {
                         <ul className="cards__items">
                             <CardItem
                                 src='images/zondahuayra.jpg'
-                                text='You can drive cars such as the Zonda Huayra..'
-                                label='Intense'
+                                text='You can drive cars such as the insane Zonda Huayra..'
+                                label='Mind-blowing'
                                 path='/services' />
 
                             <CardItem
@@ -36,9 +36,9 @@ function Cards() {
                                 path='/services' />
 
                             <CardItem
-                                src='images/FordGT2017.jpg'
-                                text='Come round our track to drive the exquisite Ford GT 2017!'
-                                label='Rapid'
+                                src='images/bentleyContinental.webp'
+                                text='Maybe you would prefer a more luxurious ride along in our Bentley Continental GT!'
+                                label='Beautiful'
                                 path='/services' />
 
                         </ul>

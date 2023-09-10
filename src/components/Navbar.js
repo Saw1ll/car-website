@@ -29,7 +29,7 @@ function Navbar() {
       <nav className='navbar'>
         <div className='navbar-container'>
           <Link to='/' className='navbar-logo' onClick={closeMobileMenu}>
-            TRVL <i className='menu-icon-image' />
+            SWRT<i className='menu-icon-image' />
           </Link>
           <div className='menu-icon' onClick={handleClick}>
             <div className={click ? 'crossIconImg' : 'menuIconImg'}></div>

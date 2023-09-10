@@ -10,7 +10,7 @@ function Footer() {
             <div className='footer-container'>
                 <section className='footer-subscription'>
                     <p className='footer-subscription-heading'>
-                        Join the TRVL log newsletter to receive the best track deals
+                        Join the SWRT log newsletter to receive the best track deals
                     </p>
                     <p className='footer-subscription-text'>
                         You can unsubscribe at any time.
@@ -50,11 +50,11 @@ function Footer() {
                         </div>
                         <div className='footer-link-items'>
                             <h2>Social Media</h2>
-                            <Link to='/'>Instagram</Link>
-                            <Link to='/'>Facebook</Link>
-                            <Link to='/'>YouTube</Link>
-                            <Link to='/'>LinkedIn</Link>
-                            <Link to='/'>X</Link>
+                            <Link to='https://www.instagram.com'>Instagram</Link>
+                            <Link to='https://www.facebook.com'>Facebook</Link>
+                            <Link to='https://www.youtube.com'>YouTube</Link>
+                            <Link to='https://www.linkedin.com'>LinkedIn</Link>
+                            <Link to='https://www.twitter.com'>X</Link>
                         </div>
                     </div>
                 </div>
@@ -62,7 +62,7 @@ function Footer() {
                     <div className='social-media-wrap'>
                         <div className='footer-logo'>
                             <Link className='social-logo'>
-                                TRVL
+                                SWRT
                             </Link>
                         </div>
                         <small className='website-rights'>TRVL © 2023</small>
