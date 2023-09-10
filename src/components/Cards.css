@@ -1,5 +1,5 @@
 .cards {
-    padding: 4rem;
+    padding: 6rem;
     background: #fff;
 }
 
@@ -11,18 +11,22 @@ h1 {
     display: flex;
     flex-flow: column;
     align-items: center;
-    max-width: 1400px !important;
-    width: 90%;
+    max-width: 1600px !important;
+    width: 80%;
     margin: 0 auto;
 }
 
 .cards__wrapper {
     position: relative;
     margin: 30px 50px 45px;
+
+    /* SIZE OF THE CARDS */
+    width: 110%;
 }
 
 .cards__items {
-    margin-bottom: 24px
+    margin-bottom: 24px;
+    width: 120%
 }
 
 .cards__item {
@@ -30,6 +34,7 @@ h1 {
     flex: 1;
     margin: 0 1rem;
     border-radius: 10px;
+    width: 100%;
 }
 
 .cards__item__link {
@@ -83,6 +88,7 @@ h1 {
     max-height: 100%;
     object-fit: cover;
     transition: all 0.2s linear;
+    transform: scale(1);
 }
 
 .cards__item__img:hover {
@@ -95,13 +101,23 @@ h1 {
 
 .cards__item__text {
     color: #252e48;
-    font-size: 18px;
+    font-size: 24px;
     line-height: 24px;
 }
 
 @media only screen and (min-width: 1200px) {
     .content__blog__container {
         width: 84%;
+    }
+}
+
+@media only screen and (max-width: 375px) {
+    .cards__item__text {
+        font-size: 80%;
+    }
+
+    .cards__items {
+        width: 150%;
     }
 }
 
