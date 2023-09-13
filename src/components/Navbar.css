@@ -21,10 +21,11 @@
 .navbar-logo {
   color: #fff;
   justify-self: start;
-  margin-left: 20px;
+  /* SIZE OF THE LOGO */
+  margin-left: -5px;
   cursor: pointer;
   text-decoration: none;
-  font-size: 2rem;
+  font-size: 3rem;
   display: flex;
   align-items: center;
 }
@@ -131,14 +132,14 @@
   }
 
   .crossIconImg {
-    background-image: url('../icons/cross.png');
+    background-image: url('/public/icons/cross.png');
     width: 32px;
     height: 32px;
     background-size: cover;
   }
 
   .menuIconImg {
-    background-image: url('../icons/menu.png');
+    background-image: url('/public/icons/menu.png');
     width: 32px;
     height: 32px;
     background-size: cover;
