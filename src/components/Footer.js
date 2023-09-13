@@ -69,43 +69,43 @@ function Footer() {
                         <div className='social-icons'>
                             <Link
                                 className='social-icon-link facebook'
-                                to='/'
+                                to='https://www.facebook.com'
                                 target='_blank'
                                 aria-label='Facebook'
                             >
-                                <i className='facebook-logo' />
+                                <div className='facebook-logo' />
                             </Link>
                             <Link
                                 className='social-icon-link instagram'
-                                to='/'
+                                to='https://www.instagram.com'
                                 target='_blank'
                                 aria-label='Instagram'
                             >
-                                <i className='instagram-logo' />
+                                <div className='instagram-logo' />
                             </Link>
                             <Link
                                 className='social-icon-link youtube'
-                                to='/'
+                                to='https://www.youtube.com'
                                 target='_blank'
                                 aria-label='YouTube'
                             >
-                                <i className='youtube-logo' />
+                                <div className='youtube-logo' />
                             </Link>
                             <Link
                                 className='social-icon-link linkedin'
-                                to='/'
+                                to='https://www.linkedin.com'
                                 target='_blank'
                                 aria-label='LinkedIn'
                             >
-                                <i className='linkedin-logo' />
+                                <div className='linkedin-logo' />
                             </Link>
                             <Link
                                 className='social-icon-link x'
-                                to='/'
+                                to='https://www.twitter.com'
                                 target='_blank'
                                 aria-label='X'
                             >
-                                <i className='x-logo' />
+                                <div className='x-logo' />
                             </Link>
                         </div>
                     </div>

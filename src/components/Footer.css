@@ -73,13 +73,13 @@
 }
 
 .footer-link-items a {
-    color: #fff;
+    color: #a0e060;
     text-decoration: none;
     margin-bottom: 8px;
 }
 
 .footer-link-items a:hover {
-    color: #e9e9e9;
+    color: #a0e090;
     transition: 0.3 ease-out;
 }
 
@@ -125,15 +125,17 @@
     margin-left: 20px;
     cursor: pointer;
     text-decoration: none;
-    font-size: 2rem;
+    font-size: 3rem;
     display: flex;
     align-self: center;
     margin-bottom: 16px;
 }
 
 .website-rights {
-    color: #fff;
+    color: #a0e080;
+    font-size: 1rem;
     margin-bottom: 16px;
+    margin-left: 500px;
 }
 
 @media screen and (max-width: 1200px) {
@@ -164,22 +166,18 @@
 .youtube-logo,
 .linkedin-logo,
 .x-logo {
-    width: 24px;
+    width: 48px;
     /* Adjust the width as needed */
-    height: 24px;
+    height: 48px;
     /* Adjust the height as needed */
-    background-size: cover;
-    /* Ensures the background image covers the entire element */
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin-left: 3px;
 }
 
 /* Specify the background images for each custom social media icon */
 .facebook-logo {
-    width: 24px;
-    /* Adjust the width as needed */
-    height: 24px;
-    /* Adjust the height as needed */
-    background-size: cover;
-    /* Ensures the background image covers the entire element */
+    background-image: url('/public/icons/facebookLogo.png');
 }
 
 
@@ -189,6 +187,7 @@
 
 .youtube-logo {
     background-image: url('/public/icons/youtubeLogo.webp');
+    margin-top: 12px;
 }
 
 .linkedin-logo {
