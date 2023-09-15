@@ -28,6 +28,25 @@ export default function SignUp() {
     }
 
     const [passwordStrength, setPasswordStrength] = useState(0);
+
+    // // displays the password strength as a string rather than numbers '0, 1, 2, 3, 4' to help people understand
+    function getPasswordStrengthText() {
+        switch (passwordStrength) {
+            case 0:
+                return 'Very weak';
+            case 1:
+                return 'Weak';
+            case 2:
+                return 'Medium';
+            case 3:
+                return 'Strong';
+            case 4:
+                return 'Extremely Strong';
+            default:
+                return 'Enter a password';
+        }
+    }
+
     useEffect(() => {
         const loginForm = document.querySelector('#login')
         const signupForm = document.querySelector('#createAccount');
@@ -55,7 +74,7 @@ export default function SignUp() {
             inputElement.addEventListener('blur', (e) => {
                 if (e.target.id === 'signUpUsername') {
                     const username = e.target.value.trim();
-                    if ((username.length < 7 && username.length > 15) || !/^[A-Za-z0-9_-]+$/.test(username)) {
+                    if ((username.length < 7 || username.length > 15) || !/^[A-Za-z0-9_-]+$/.test(username)) {
                         e.preventDefault();
                         setInputError(inputElement, 'Username must be at least seven but less than sixteen characters in length and can only contain alphanumeric characters, hyphens, or underscores.');
                     }
@@ -68,10 +87,9 @@ export default function SignUp() {
                     const password = e.target.value.trim();
                     const strength = zxcvbn(password); // Calculate password strength
                     setPasswordStrength(strength.score); // Update passwordStrength state
-
-                    if ((password.length < 7 || password.length > 30) || !/[A-Za-z0-9!@#$%^&*()_+{}[\]:;<>,.?~\\-]+/.test(password)) {
+                    if (password.length < 7 || password.length > 30 || strength.score < 2) {
                         e.preventDefault();
-                        setInputError(inputElement, 'Please enter a password with a minimum of seven characters and a maximum of thirty characters that contains at least one special or number character');
+                        setInputError(inputElement, 'Please enter a password with a minimum of seven characters and a maximum of thirty characters that is strong enough.');
                     }
                 }
 
@@ -144,7 +162,7 @@ export default function SignUp() {
                                 placeholder='Password' />
                             <div className="form__input-error-message"></div>
                             <div className="form__password-strength">
-                                Password Strength: {passwordStrength}
+                                Password Strength: {getPasswordStrengthText()}
                             </div>
                         </div>
                         <div className="form__input-group">
