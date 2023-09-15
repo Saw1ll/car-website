@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import '../../App.css';
 import '../SignUp.css';
 
@@ -23,6 +23,10 @@ export default function SignUp() {
         inputElement.parentElement.querySelector('.form__input-error-message').textContent = '';
     }
 
+    const [showPassword, setShowPassword] = useState(false);
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    }
     useEffect(() => {
         const loginForm = document.querySelector('#login')
         const signupForm = document.querySelector('#createAccount');
@@ -46,6 +50,8 @@ export default function SignUp() {
             // perform fetch login
             setFormMessage(loginForm, 'error', 'Invalid username/password combination');
         });
+
+
         document.querySelectorAll('.form__input').forEach(inputElement => {
             inputElement.addEventListener('blur', (e) => {
                 if (e.target.id === 'signUpUsername') {
@@ -60,22 +66,25 @@ export default function SignUp() {
                     setInputError(inputElement, 'Please enter a valid email address.');
                 }
                 if (e.target.id === 'signUpPassword') {
-                    const password = e.target.value.trim();
-                    if ((password.length < 7 && password.length > 30) || !/[A-Za-z0-9!@#$%^&*()_+{}[\]:;<>,.?~\\-]+/.test(password))
-                        e.preventDefault();
-                    setInputError(inputElement, 'Please enter a password with a minimum of seven characters and a maximum of thirty characters that contains at least one special or number character')
-                }
-                if (e.target.id === 'signUpConfirmPassword') {
-                    const confirmPassword = e.target.value.trim();
-                    const passwordField = document.querySelector('#signUpPassword');
-                    const password = passwordField.value.trim();
+    const password = e.target.value.trim();
+    if ((password.length < 7 || password.length > 30) || !/[A-Za-z0-9!@#$%^&*()_+{}[\]:;<>,.?~\\-]+/.test(password)) {
+        e.preventDefault();
+        setInputError(inputElement, 'Please enter a password with a minimum of seven characters and a maximum of thirty characters that contains at least one special or number character');
+    }
+}
 
-                    if(confirmPassword !== password) {
-                        e.preventDefault();
-                        setInputError(inputElement, 'Passwords do not match.');
-                    }
-                }
-            });
+if (e.target.id === 'signUpConfirmPassword') {
+    const confirmPassword = e.target.value.trim();
+    const passwordField = document.querySelector('#signUpPassword');
+    const password = passwordField.value.trim();
+
+    if (confirmPassword !== password) {
+        e.preventDefault();
+        setInputError(inputElement, 'Passwords do not match.');
+    }
+}
+
+                });
             inputElement.addEventListener('input', (e) => {
                 clearInputError(inputElement);
             })
@@ -92,7 +101,7 @@ export default function SignUp() {
     /*
     document.addEventListener('DOMContentLoaded', () => {
         // saves what is associated with the id login and createAccount 
-
+    
         document.querySelector('#linkCreateAccount').addEventListener('click', (e) => {
             // links to css that hides the login form by default 
             e.preventDefault();
@@ -101,7 +110,7 @@ export default function SignUp() {
             // makes it so you can't scroll which prevents any issues with the page being displayed
             document.body.style.overflow = 'hidden';
         })
-
+    
         document.querySelector('#linkLogin').addEventListener('click', (e) => {
             // if 'Click to login is clicked then it'll execute the following code which
             //   makes it so the login form is unhidden and the signup form is hidden 
@@ -154,14 +163,25 @@ export default function SignUp() {
                             <div className="form__input-error-message"></div>
                         </div>
                         <div className="form__input-group">
-                            <input type="password" id='signUpPassword' className="form__input" placeholder='Password' />
+                            <input
+                                type={showPassword ? 'text' : 'password'}
+                                id='signUpPassword'
+                                className="form__input"
+                                placeholder='Password' />
                             <div className="form__input-error-message"></div>
                         </div>
                         <div className="form__input-group">
-                            <input type="password" id='signUpConfirmPassword' className="form__input" placeholder='Confirm Password' />
+                            <input
+                                type={showPassword ? 'text' : 'password'}
+                                id='signUpConfirmPassword'
+                                className="form__input"
+                                placeholder='Confirm Password' />
                             <div className="form__input-error-message"></div>
+                            <button type='button' className='toggle-password-button' onClick={togglePasswordVisibility}>
+                                {showPassword ? 'Hide Password' : 'Show Password'}
+                            </button>
                         </div>
-                        <button className="form__button" type='submit'>Continue</button>
+                        <button className="form__button" type='submit' id='createAcc-continueButton'>Continue</button>
                         <p className="form__text">
                             <Link className='form__link' to='./' id='linkLogin'>Already have an account? Click to login</Link>
                         </p>
