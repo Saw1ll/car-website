@@ -1,13 +1,12 @@
 import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
+import zxcvbn from "zxcvbn"; // Import the zxcvbn library
 import '../../App.css';
 import '../SignUp.css';
 
 export default function SignUp() {
     function setFormMessage(formElement, type, message) {
-        // selects the form message class,
         const messageElement = formElement.querySelector('.form__message');
-        // this will determine the choices possible, success would be green and error would be red
         messageElement.textContent = message;
         messageElement.classList.remove('form__message--success', 'form__message--error');
         messageElement.classList.add(`form__message--${type}`)
@@ -27,6 +26,8 @@ export default function SignUp() {
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     }
+
+    const [passwordStrength, setPasswordStrength] = useState(0);
     useEffect(() => {
         const loginForm = document.querySelector('#login')
         const signupForm = document.querySelector('#createAccount');
@@ -47,15 +48,13 @@ export default function SignUp() {
 
         loginForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            // perform fetch login
             setFormMessage(loginForm, 'error', 'Invalid username/password combination');
         });
-
 
         document.querySelectorAll('.form__input').forEach(inputElement => {
             inputElement.addEventListener('blur', (e) => {
                 if (e.target.id === 'signUpUsername') {
-                    const username = e.target.value.trim(); // Remove leading/trailing whitespace so spaces aren't included
+                    const username = e.target.value.trim();
                     if ((username.length < 7 && username.length > 15) || !/^[A-Za-z0-9_-]+$/.test(username)) {
                         e.preventDefault();
                         setInputError(inputElement, 'Username must be at least seven but less than sixteen characters in length and can only contain alphanumeric characters, hyphens, or underscores.');
@@ -66,25 +65,28 @@ export default function SignUp() {
                     setInputError(inputElement, 'Please enter a valid email address.');
                 }
                 if (e.target.id === 'signUpPassword') {
-    const password = e.target.value.trim();
-    if ((password.length < 7 || password.length > 30) || !/[A-Za-z0-9!@#$%^&*()_+{}[\]:;<>,.?~\\-]+/.test(password)) {
-        e.preventDefault();
-        setInputError(inputElement, 'Please enter a password with a minimum of seven characters and a maximum of thirty characters that contains at least one special or number character');
-    }
-}
+                    const password = e.target.value.trim();
+                    const strength = zxcvbn(password); // Calculate password strength
+                    setPasswordStrength(strength.score); // Update passwordStrength state
 
-if (e.target.id === 'signUpConfirmPassword') {
-    const confirmPassword = e.target.value.trim();
-    const passwordField = document.querySelector('#signUpPassword');
-    const password = passwordField.value.trim();
+                    if ((password.length < 7 || password.length > 30) || !/[A-Za-z0-9!@#$%^&*()_+{}[\]:;<>,.?~\\-]+/.test(password)) {
+                        e.preventDefault();
+                        setInputError(inputElement, 'Please enter a password with a minimum of seven characters and a maximum of thirty characters that contains at least one special or number character');
+                    }
+                }
 
-    if (confirmPassword !== password) {
-        e.preventDefault();
-        setInputError(inputElement, 'Passwords do not match.');
-    }
-}
+                if (e.target.id === 'signUpConfirmPassword') {
+                    const confirmPassword = e.target.value.trim();
+                    const passwordField = document.querySelector('#signUpPassword');
+                    const password = passwordField.value.trim();
 
-                });
+                    if (confirmPassword !== password) {
+                        e.preventDefault();
+                        setInputError(inputElement, 'Passwords do not match.');
+                    }
+                }
+            });
+
             inputElement.addEventListener('input', (e) => {
                 clearInputError(inputElement);
             })
@@ -95,37 +97,9 @@ if (e.target.id === 'signUpConfirmPassword') {
             loginLink.removeEventListener('click', showLoginForm);
             loginForm.removeEventListener('submit', showLoginForm);
         }
-
-
-    }, [])
-    /*
-    document.addEventListener('DOMContentLoaded', () => {
-        // saves what is associated with the id login and createAccount 
-    
-        document.querySelector('#linkCreateAccount').addEventListener('click', (e) => {
-            // links to css that hides the login form by default 
-            e.preventDefault();
-            loginForm.classList.add('form--hidden');
-            signupForm.classList.remove('form--hidden');
-            // makes it so you can't scroll which prevents any issues with the page being displayed
-            document.body.style.overflow = 'hidden';
-        })
-    
-        document.querySelector('#linkLogin').addEventListener('click', (e) => {
-            // if 'Click to login is clicked then it'll execute the following code which
-            //   makes it so the login form is unhidden and the signup form is hidden 
-                e.preventDefault();
-                loginForm.classList.remove('form--hidden');
-                signupForm.classList.add('form--hidden');
-                // makes it so you can scroll
-                document.body.style.overflow = 'auto';
-        })
-    }); 
-    */
+    }, []);
 
     return (
-        /* signup-body is the body of the html page, 
-            signup-container contains all of the login/sign-up form's content */
         <>
             <div className='signup-body'>
                 <div className='signup-container'>
@@ -169,6 +143,9 @@ if (e.target.id === 'signUpConfirmPassword') {
                                 className="form__input"
                                 placeholder='Password' />
                             <div className="form__input-error-message"></div>
+                            <div className="form__password-strength">
+                                Password Strength: {passwordStrength}
+                            </div>
                         </div>
                         <div className="form__input-group">
                             <input
