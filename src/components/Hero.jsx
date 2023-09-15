@@ -1,6 +1,6 @@
 // hero is a large image spanning across the webpage
 import React from "react";
-import { Button } from './Button';
+import { Button } from './Button.jsx';
 import '../App.css';
 import './Hero.css';
 
