@@ -1,17 +1,29 @@
 import { Link } from "react-router-dom";
-import React from "react";
+import React, { useEffect} from "react";
 import '../../App.css';
 import '../SignUp.css';
 
 export default function SignUp() {
     document.addEventListener('DOMContentLoaded', () => {
+        /* saves what is associated with the id login and createAccount */
         const loginForm = document.querySelector('#login')
         const signupForm = document.querySelector('#createAccount');
 
-        document.querySelector('#linkCreateAccount').addEventListener('click', () => {
+        document.querySelector('#linkCreateAccount').addEventListener('click', (e) => {
             /* links to css that hides the login form by default */
-            loginForm.classList.add('form-hidden');
+            e.preventDefault();
+            loginForm.classList.add('form--hidden');
             signupForm.classList.remove('form--hidden');
+            document.body.style.overflow = 'hidden';
+        })
+
+        document.querySelector('#linkLogin').addEventListener('click', (e) => {
+            /* if 'Click to login is clicked then it'll execute the following code which
+                makes it so the login form is unhidden and the signup form is hidden */
+                e.preventDefault();
+                loginForm.classList.remove('form--hidden');
+                signupForm.classList.add('form--hidden');
+                document.body.style.overflow = 'hidden';
         })
     });
 
@@ -40,6 +52,8 @@ export default function SignUp() {
                             <Link to='./' id='linkCreateAccount' className='form__link'>Don't have an account? It's simple to create one</Link>
                         </p>
                     </form>
+
+
                     <form className='form' id='createAccount'>
                         <h1 className="form__title">Create Account</h1>
                         <div className="form__message form__message--error"></div>
@@ -47,6 +61,7 @@ export default function SignUp() {
                             <input type="text" autoFocus className="form__input" placeholder='Username' />
                             <div className="form__input-error-message"></div>
                         </div>
+
                         <div className="form__input-group">
                             <input type="password" className="form__input" placeholder='Email address' />
                             <div className="form__input-error-message"></div>
