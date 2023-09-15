@@ -100,6 +100,10 @@
     color: var(--color-error)
 }
 
+#createAcc-continueButton {
+    margin-top: -0.6rem;
+}
+
 .form__button {
     width: 100%;
     padding: 1rem 2rem;
@@ -120,6 +124,29 @@
 .form__button:active {
     transform: scale(0.98);
 }
+
+/* Add custom styles for the toggle password button */
+.toggle-password-button {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 1rem;
+    /* Match the font size of the form elements */
+    font-weight: 500;
+    /* Match the font weight of the form elements */
+    color: #fff;
+    /* Text color */
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    background-color: var(--color-primary);
+}
+
+.toggle-password-button:hover {
+    /* Adjust the hover color to match the form elements */
+    background-color: var(--color-primary-dark);
+}
+
+
 
 .form__text {
     text-align: center;
