@@ -125,7 +125,6 @@
     transform: scale(0.98);
 }
 
-/* Add custom styles for the toggle password button */
 .toggle-password-button {
     width: 100%;
     padding: 0.5rem;
@@ -142,7 +141,6 @@
 }
 
 .toggle-password-button:hover {
-    /* Adjust the hover color to match the form elements */
     background-color: var(--color-primary-dark);
 }
 
