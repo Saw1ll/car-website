@@ -34,6 +34,10 @@
     font-weight: 500;
 }
 
+.form--hidden {
+    display: none;
+}
+
 .form>*:first-child {
     margin-top: 0;
 }
@@ -94,4 +98,39 @@
     margin-top: 0.5rem;
     font-size: 0.85rem;
     color: var(--color-error)
+}
+
+.form__button {
+    width: 100%;
+    padding: 1rem 2rem;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #fff;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    background-color: var(--color-primary);
+}
+
+.form__button:hover {
+    /* when hovering over the Continue button, there would be a change in the colour of the background of the button */
+    background-color: var(--color-primary-dark);
+}
+
+.form__button:active {
+    transform: scale(0.98);
+}
+
+.form__text {
+    text-align: center;
+}
+
+.form__link {
+    color: var(--color-secondary);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.form__link:hover {
+    text-decoration: underline;
 }
