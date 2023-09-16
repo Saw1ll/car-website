@@ -4,16 +4,17 @@ import axios from 'axios';
 import '../../App.css';
 import '../SignUp.css';
 
+function setFormMessage(formElement, type, message) {
+    const messageElement = formElement.querySelector('.form__message');
+    messageElement.textContent = message;
+    messageElement.classList.remove('form__message--success', 'form__message--error');
+    messageElement.classList.add(`form__message--${type}`);
+}
+
 export default function Login() {
     const [showPassword, setShowPassword] = useState(false);
+    const [loginSuccess, setLoginSuccess] = useState('');
     const [loginError, setLoginError] = useState('');
-
-    function setFormMessage(formElement, type, message) {
-        const messageElement = formElement.querySelector('.form__message');
-        messageElement.textContent = message;
-        messageElement.classList.remove('form__message--success', 'form__message--error');
-        messageElement.classList.add(`form__message--${type}`);
-    }
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
@@ -26,19 +27,24 @@ export default function Login() {
         const usernameOrEmail = document.querySelector('#loginUsernameOrEmail').value;
         const password = document.querySelector('#loginPassword').value;
 
+        // Get a reference to the login form
+        const loginForm = document.querySelector('#login');
+
         // Make a POST request for login
         try {
-            const response = await axios.post('http://localhost:3000/login', {
+            const response = await axios.post('http://localhost:3000/users/login', {
                 usernameOrEmail,
                 password
             });
             if (response.status === 200) {
                 // Login successful, you can redirect or set user state here
+                setLoginSuccess('Login successful');
             } else {
                 setLoginError('Invalid username/email or password.');
+                setFormMessage(loginForm, 'error', 'Invalid username/email or password.');
             }
         } catch (error) {
-            setLoginError('An error occurred. Please try again later.');
+            setFormMessage(loginForm, 'error', 'An error occurred. Please try again later.');
         }
     }
 
@@ -57,6 +63,9 @@ export default function Login() {
                 <div className="signup-container">
                     <form className='form' id='login'>
                         <h1 className="form__title">Login</h1>
+                        {loginSuccess && (
+                            <p className="success-message">{loginSuccess}</p>
+                        )}
                         {loginError && (
                             <p className="error-message">{loginError}</p>
                         )}

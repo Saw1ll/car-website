@@ -133,7 +133,7 @@ export default function SignUp() {
                     <form className='form' id='createAccount'>
                         <h1 className="form__title">Create Account</h1>
                         {registrationSuccess && (
-                            <p className="success-message">Registration successful! You can now <Link className='form__link' to='./' id='linkLogin'>log in</Link>!</p>
+                            <p className="success-message">Registration successful! You can now <Link className='form__link' to='/log-in' id='linkLogin'>log in</Link>!</p>
                         )}
 
                         {registrationError && (
