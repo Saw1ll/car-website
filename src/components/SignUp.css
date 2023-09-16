@@ -104,6 +104,10 @@
     margin-top: -0.6rem;
 }
 
+#signIn--continueButton {
+    margin-top: 0.3rem;
+}
+
 .form__button {
     width: 100%;
     padding: 1rem 2rem;

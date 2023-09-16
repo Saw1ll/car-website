@@ -1,10 +1,17 @@
 import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import zxcvbn from "zxcvbn"; // Import the zxcvbn library
+import axios from 'axios';
 import '../../App.css';
 import '../SignUp.css';
 
 export default function SignUp() {
+    const [showPassword, setShowPassword] = useState(false);
+    const [passwordStrength, setPasswordStrength] = useState(0);
+    const [registrationSuccess, setRegistrationSuccess] = useState(false);
+    const [registrationError, setRegistrationError] = useState('');
+
+
     function setFormMessage(formElement, type, message) {
         const messageElement = formElement.querySelector('.form__message');
         messageElement.textContent = message;
@@ -22,12 +29,39 @@ export default function SignUp() {
         inputElement.parentElement.querySelector('.form__input-error-message').textContent = '';
     }
 
-    const [showPassword, setShowPassword] = useState(false);
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     }
 
-    const [passwordStrength, setPasswordStrength] = useState(0);
+    const handleRegistration = async (e) => {
+        e.preventDefault();
+
+        // Select the values from each of the ids 'signUp(Username/Email/Password) and save to a variable
+        const username = document.querySelector('#signUpUsername').value;
+        const email = document.querySelector('#signUpEmail').value;
+        const password = document.querySelector('#signUpPassword').value;
+
+        // POST REQUEST
+        try {
+            const response = await axios.post('http://localhost:3000/users', {
+                name: username,
+                email,
+                password
+            });
+            if (response.status === 201) {
+                setRegistrationSuccess(true);
+            } else {
+                setRegistrationError('Registration failed. Please try again.')
+            }
+
+        } catch (error) {
+            if (error.response && error.response.status === 400 && error.response.data.error === 'Email is already in use') {
+                setRegistrationError('That email has already been used before.');
+            } else {
+                setRegistrationError('An error occurred. Please try again later.')
+            }
+        }
+    }
 
     // // displays the password strength as a string rather than numbers '0, 1, 2, 3, 4' to help people understand
     function getPasswordStrengthText() {
@@ -48,35 +82,16 @@ export default function SignUp() {
     }
 
     useEffect(() => {
-        const loginForm = document.querySelector('#login')
         const signupForm = document.querySelector('#createAccount');
         const createAccountLink = document.querySelector('#linkCreateAccount');
-        const loginLink = document.querySelector('#linkLogin');
-
-        const showSignupForm = () => {
-            loginForm.classList.add('form--hidden');
-            signupForm.classList.remove('form--hidden');
-        }
-        const showLoginForm = () => {
-            loginForm.classList.remove('form--hidden');
-            signupForm.classList.add('form--hidden');
-        }
-
-        createAccountLink.addEventListener('click', showSignupForm);
-        loginLink.addEventListener('click', showLoginForm);
-
-        loginForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            setFormMessage(loginForm, 'error', 'Invalid username/password combination');
-        });
 
         document.querySelectorAll('.form__input').forEach(inputElement => {
             inputElement.addEventListener('blur', (e) => {
                 if (e.target.id === 'signUpUsername') {
                     const username = e.target.value.trim();
-                    if ((username.length < 7 || username.length > 15) || !/^[A-Za-z0-9_-]+$/.test(username)) {
+                    if ((username.length < 4 || username.length > 15) || !/^[A-Za-z0-9_-]+$/.test(username)) {
                         e.preventDefault();
-                        setInputError(inputElement, 'Username must be at least seven but less than sixteen characters in length and can only contain alphanumeric characters, hyphens, or underscores.');
+                        setInputError(inputElement, 'Username must be at least four but less than sixteen characters in length and can only contain alphanumeric characters, hyphens, or underscores.');
                     }
                 }
                 if (e.target.id === 'signUpEmail' && !/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(e.target.value)) {
@@ -109,41 +124,21 @@ export default function SignUp() {
                 clearInputError(inputElement);
             })
         })
-
-        return () => {
-            createAccountLink.removeEventListener('click', showSignupForm);
-            loginLink.removeEventListener('click', showLoginForm);
-            loginForm.removeEventListener('submit', showLoginForm);
-        }
     }, []);
 
     return (
         <>
-            <div className='signup-body'>
-                <div className='signup-container'>
-                    <form className='form' id='login'>
-                        <h1 className="form__title">Login</h1>
-                        <div className="form__message form__message--error"></div>
-                        <div className="form__input-group">
-                            <input type="text" autoFocus className="form__input" placeholder='Username or email' />
-                            <div className="form__input-error-message"></div>
-                        </div>
-                        <div className="form__input-group">
-                            <input type="password" className="form__input" placeholder='Password' />
-                            <div className="form__input-error-message"></div>
-                        </div>
-                        <button className="form__button" type='submit'>Continue</button>
-                        <p className="form__text">
-                            <Link to='./' className='form__link'>Forget your password? Don't worry we'll get you back on track!</Link>
-                        </p>
-                        <p className="form__text">
-                            <Link to='./' id='linkCreateAccount' className='form__link'>Don't have an account? It's simple to create one</Link>
-                        </p>
-                    </form>
-
-
-                    <form className='form form--hidden' id='createAccount'>
+            <div className="signup-body">
+                <div className="signup-container">
+                    <form className='form' id='createAccount'>
                         <h1 className="form__title">Create Account</h1>
+                        {registrationSuccess && (
+                            <p className="success-message">Registration successful! You can now <Link className='form__link' to='./' id='linkLogin'>log in</Link>!</p>
+                        )}
+
+                        {registrationError && (
+                            <p className="error-message">{registrationError}</p>
+                        )}
                         <div className="form__message form__message--error"></div>
                         <div className="form__input-group">
                             <input type="text" id='signUpUsername' autoFocus className="form__input" placeholder='Username' />
@@ -176,9 +171,16 @@ export default function SignUp() {
                                 {showPassword ? 'Hide Password' : 'Show Password'}
                             </button>
                         </div>
-                        <button className="form__button" type='submit' id='createAcc-continueButton'>Continue</button>
+                        <button
+                            className="form__button"
+                            type='submit'
+                            id='createAcc-continueButton'
+                            onClick={handleRegistration}
+                        >
+                            Continue
+                        </button>
                         <p className="form__text">
-                            <Link className='form__link' to='./' id='linkLogin'>Already have an account? Click to login</Link>
+                            <Link className='form__link' to='/log-in' id='linkLogin'>Already have an account? Click to login</Link>
                         </p>
                     </form>
                 </div>
