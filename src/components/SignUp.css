@@ -3,7 +3,7 @@
     --color-primary-dark: #007f67;
     --color-secondary: #252c6a;
     --color-error: #cc3333;
-    --color-success: #a0e080;
+    --color-success: #007f67;
     --border-radius: 4px;
 
     margin: 0;
@@ -147,8 +147,19 @@
 .toggle-password-button:hover {
     background-color: var(--color-primary-dark);
 }
+.password-veryweak,
+.password-weak {
+    color: red;
+}
 
+.password-medium {
+    color: orange;
+}
 
+.password-strong,
+.password-verystrong {
+    color: green;
+}
 
 .form__text {
     text-align: center;

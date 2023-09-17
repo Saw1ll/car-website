@@ -32,7 +32,7 @@ export default function Login() {
 
         // Make a POST request for login
         try {
-            const response = await axios.post('http://localhost:3000/users/login', {
+            const response = await axios.post('http://localhost:3000/api/users/login', {
                 usernameOrEmail,
                 password
             });
@@ -64,10 +64,10 @@ export default function Login() {
                     <form className='form' id='login'>
                         <h1 className="form__title">Login</h1>
                         {loginSuccess && (
-                            <p className="success-message">{loginSuccess}</p>
+                            <p className="form__message--success">{loginSuccess}</p>
                         )}
                         {loginError && (
-                            <p className="error-message">{loginError}</p>
+                            <p className="form__message--error">{loginError}</p>
                         )}
                         <div className="form__message form__message--error"></div>
                         <div className="form__input-group">

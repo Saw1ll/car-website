@@ -1,27 +1,38 @@
+const users = [];
 const bcrypt = require('bcrypt');
+const bodyParser = require('body-parser');
+const mysql = require('mysql');
 const express = require('express');
 const cors = require('cors');
 const { v4: uuidv4 } = require('uuid');
 const app = express();
-
-const users = [];
 const port = 3000;
 
 const corsOptions = {
-    origin: 'http://localhost:3001', // Replace with the actual URL of your frontend
+    origin: 'http://localhost:3001',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
     optionsSuccessStatus: 204,
-};
+}
 app.use(express.json());
-app.use(cors(corsOptions)); // Enable CORS for all routes
+app.use(cors(corsOptions));
 
-app.get('/users', (req, res) => {
-    res.json(users);
+const connection = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    database: 'car-website-logins'
 });
 
-// CREATING ACCOUNT
-app.post('/users', async (req, res) => {
+connection.connect((err) => {
+    if (err) {
+        console.error('There was a difficulty connecting to the MySQL database:', err);
+    } else {
+        console.log('Successfully connected to the MySQL database!');
+    }
+});
+
+app.post('/api/users', async (req, res) => {
     try {
         const { name, email, password } = req.body;
 
@@ -29,25 +40,39 @@ app.post('/users', async (req, res) => {
             return res.status(400).json({ error: 'Name, email, and password are required' });
         }
 
-        // Check if there's a user with same email
-        const existingEmail = users.find(user => user.email === email);
-        if (existingEmail) {
-            return res.status(400).json({ error: 'Email address is already in use' });
-        }
-        const existingUser = users.find(user => user.name === name);
-        if (existingUser) {
-            return res.status(400).json({ error: 'Username is already in use' });
-        }
+        // Check if there's a user with the same email or username in the database
+        connection.query(
+            'SELECT * FROM carwebsitelogindatabase WHERE email = ? OR name = ?',
+            [email, name],
+            async (err, results) => {
+                if (err) {
+                    console.error('Database query error:', err);
+                    return res.status(500).json({ error: 'Internal Server Error' });
+                }
 
-        // Hashing Passwords
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const userId = uuidv4();
-        const user = { id: userId, name, email, password: hashedPassword };
-        // NEXT LINE PUSHES THE userId, email and hashedPassword into the users array
-        users.push(user);
-        // shows that the POST request has been successful
-        console.log('Received POST request to /users:', name); // Logging the username
-        res.status(201).json({ message: 'Registration successful' });
+                if (results.length > 0) {
+                    // A user with the same email or username already exists
+                    return res.status(400).json({ error: 'Email or username is already in use' });
+                }
+
+                // Hashing Passwords
+                const hashedPassword = await bcrypt.hash(password, 10);
+                const userId = uuidv4();
+                const user = { id: userId, name, email, password: hashedPassword };
+
+                // DATABASE INSERT QUERY
+                const insertQuery = 'INSERT INTO carwebsitelogindatabase (id, name, email, password) VALUES (?, ?, ?, ?)';
+                connection.query(insertQuery, [user.id, user.name, user.email, user.password], (err, result) => {
+                    if (err) {
+                        console.error(`There was an error inserting the user into the MySQL database: ${err}`);
+                        return res.status(500).json({ error: 'Failed to add user.' });
+                    }
+                    console.log('User successfully inserted into MySQL database.');
+                    // Respond with a success message
+                    res.status(201).json({ message: 'Registration successful' });
+                });
+            }
+        );
     } catch (error) {
         console.error('Error registering user:', error);
         res.status(500).json({ error: 'Internal Server Error' });
@@ -55,25 +80,40 @@ app.post('/users', async (req, res) => {
 });
 
 
-
-
-// POSTING LOGIN INPUT FROM LOGIN FORM
-app.post('/users/login', async (req, res) => {
+app.post('/api/users/login', async (req, res) => {
     const { usernameOrEmail, password } = req.body;
 
     if (!usernameOrEmail || !password) {
         return res.status(400).json({ error: 'Username/email and password are required' });
     }
 
-    const user = users.find((user) => (user.name === usernameOrEmail || user.email === usernameOrEmail) && bcrypt.compareSync(password, user.password));
+    // Query the database to find the user by username or email
+    connection.query(
+        'SELECT * FROM carwebsitelogindatabase WHERE name = ? OR email = ?',
+        [usernameOrEmail, usernameOrEmail],
+        async (err, results) => {
+            if (err) {
+                console.error('Database query error:', err);
+                return res.status(500).json({ error: 'Internal Server Error' });
+            }
 
-    if (!user) {
-        return res.status(400).json({ error: 'User not found' });
-    }
+            if (results.length === 0) {
+                return res.status(400).json({ error: 'User not found' });
+            }
 
-    res.json({ message: 'Login successful' });
+            const user = results[0]; // Assuming there's only one user with the provided username/email
+
+            // Compare the hashed password
+            const passwordMatch = await bcrypt.compare(password, user.password);
+
+            if (!passwordMatch) {
+                return res.status(400).json({ error: 'Invalid password' });
+            }
+
+            res.json({ message: 'Login successful' });
+        }
+    );
 });
-
 
 app.listen(port, () => {
     console.log(`Server is listening on port ${port}.`);
