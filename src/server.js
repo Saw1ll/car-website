@@ -3,17 +3,28 @@ const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
 const express = require('express');
+const session = require('express-session')
+const MySQLStore = require('express-mysql-session')(session)
 const cors = require('cors');
 const { v4: uuidv4 } = require('uuid');
 const app = express();
-const port = 3000;
+const port = 8080;
+
+const cookieTimer = 1000 * 60 * 60 * 3; // 3 hours
 
 const corsOptions = {
-    origin: 'http://localhost:3001',
+    origin: `http://localhost:3000`,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
     optionsSuccessStatus: 204,
 }
+
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    next();
+  });
 app.use(express.json());
 app.use(cors(corsOptions));
 
@@ -34,16 +45,16 @@ connection.connect((err) => {
 
 app.post('/api/users', async (req, res) => {
     try {
-        const { name, email, password } = req.body;
+        const { username, email, password } = req.body;
 
-        if (!name || !email || !password) {
-            return res.status(400).json({ error: 'Name, email, and password are required' });
+        if (!username || !email || !password) {
+            return res.status(400).json({ error: 'Username, email, and password are required' });
         }
 
         // Check if there's a user with the same email or username in the database
         connection.query(
-            'SELECT * FROM carwebsitelogindatabase WHERE email = ? OR name = ?',
-            [email, name],
+            'SELECT * FROM carwebsitelogindatabase WHERE email = ? OR username = ?',
+            [email, username],
             async (err, results) => {
                 if (err) {
                     console.error('Database query error:', err);
@@ -58,11 +69,11 @@ app.post('/api/users', async (req, res) => {
                 // Hashing Passwords
                 const hashedPassword = await bcrypt.hash(password, 10);
                 const userId = uuidv4();
-                const user = { id: userId, name, email, password: hashedPassword };
+                const user = { userId: userId, username, email, password: hashedPassword };
 
                 // DATABASE INSERT QUERY
-                const insertQuery = 'INSERT INTO carwebsitelogindatabase (id, name, email, password) VALUES (?, ?, ?, ?)';
-                connection.query(insertQuery, [user.id, user.name, user.email, user.password], (err, result) => {
+                const insertQuery = 'INSERT INTO carwebsitelogindatabase (userId, username, email, password) VALUES (?, ?, ?, ?)';
+                connection.query(insertQuery, [user.userId, user.username, user.email, user.password], (err, result) => {
                     if (err) {
                         console.error(`There was an error inserting the user into the MySQL database: ${err}`);
                         return res.status(500).json({ error: 'Failed to add user.' });
@@ -89,7 +100,7 @@ app.post('/api/users/login', async (req, res) => {
 
     // Query the database to find the user by username or email
     connection.query(
-        'SELECT * FROM carwebsitelogindatabase WHERE name = ? OR email = ?',
+        'SELECT * FROM carwebsitelogindatabase WHERE username = ? OR email = ?',
         [usernameOrEmail, usernameOrEmail],
         async (err, results) => {
             if (err) {

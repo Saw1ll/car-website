@@ -35,8 +35,8 @@ export default function SignUp() {
 
         // POST REQUEST
         try {
-            const response = await axios.post('http://localhost:3000/api/users', {
-                name: username,
+            const response = await axios.post('http://localhost:8080/api/users', {
+                username: username,
                 email,
                 password
             });
@@ -97,9 +97,6 @@ function getPasswordStrengthClass(strength) {
 
 
 useEffect(() => {
-    const signupForm = document.querySelector('#createAccount');
-    const createAccountLink = document.querySelector('#linkCreateAccount');
-
     document.querySelectorAll('.form__input').forEach(inputElement => {
         inputElement.addEventListener('blur', (e) => {
             if (e.target.id === 'signUpUsername') {
