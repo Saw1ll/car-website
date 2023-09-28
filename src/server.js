@@ -1,6 +1,4 @@
-const users = [];
 const bcrypt = require('bcrypt');
-const bodyParser = require('body-parser');
 const mysql = require('mysql');
 const express = require('express');
 const session = require('express-session')
@@ -12,6 +10,7 @@ const port = 8080;
 
 const cookieTimer = 1000 * 60 * 60 * 3; // 3 hours
 
+// ALLOWS CORS TO ACCEPT DATA FROM PORT 3000 WHICH IS THE WEBSITE
 const corsOptions = {
     origin: `http://localhost:3000`,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
@@ -24,7 +23,7 @@ app.use((req, res, next) => {
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
     next();
-  });
+});
 app.use(express.json());
 app.use(cors(corsOptions));
 

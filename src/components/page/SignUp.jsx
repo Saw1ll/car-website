@@ -58,156 +58,155 @@ export default function SignUp() {
             }
         }
 
-}
-
-
-// // displays the password strength as a string rather than numbers '0, 1, 2, 3, 4' to help people understand
-function getPasswordStrengthText() {
-    switch (passwordStrength) {
-        case 0:
-            return 'Very weak';
-        case 1:
-            return 'Weak';
-        case 2:
-            return 'Medium';
-        case 3:
-            return 'Strong';
-        case 4:
-            return 'Extremely Strong';
-        default:
-            return 'Enter a password';
     }
-}
 
-function getPasswordStrengthClass(strength) {
-    if (strength === 0) {
-        return 'password-veryweak';
-    } else if (strength === 1) {
-        return 'password-weak';
-    } else if (strength === 2) {
-        return 'password-medium';
-    } else if (strength === 3) {
-        return 'password-strong';
-    } else if (strength === 4) {
-        return 'password-verystrong';
-    } else {
-        return ''; // Handle the default case or invalid input
+
+    // // displays the password strength as a string rather than numbers '0, 1, 2, 3, 4' to help people understand
+    function getPasswordStrengthText() {
+        switch (passwordStrength) {
+            case 0:
+                return 'Very weak';
+            case 1:
+                return 'Weak';
+            case 2:
+                return 'Medium';
+            case 3:
+                return 'Strong';
+            case 4:
+                return 'Extremely Strong';
+            default:
+                return 'Enter a password';
+        }
     }
-}
+
+    function getPasswordStrengthClass(strength) {
+        if (strength === 0) {
+            return 'password-veryweak';
+        } else if (strength === 1) {
+            return 'password-weak';
+        } else if (strength === 2) {
+            return 'password-medium';
+        } else if (strength === 3) {
+            return 'password-strong';
+        } else if (strength === 4) {
+            return 'password-verystrong';
+        } else {
+            return ''; // Handle the default case or invalid input
+        }
+    }
 
 
-useEffect(() => {
-    document.querySelectorAll('.form__input').forEach(inputElement => {
-        inputElement.addEventListener('blur', (e) => {
-            if (e.target.id === 'signUpUsername') {
-                const username = e.target.value.trim();
-                if ((username.length < 4 || username.length > 15) || !/^[A-Za-z0-9_-]+$/.test(username)) {
-                    e.preventDefault();
-                    setInputError(inputElement, 'Username must be at least four but less than sixteen characters in length and can only contain alphanumeric characters, hyphens, or underscores.');
+    useEffect(() => {
+        document.querySelectorAll('.form__input').forEach(inputElement => {
+            inputElement.addEventListener('blur', (e) => {
+                if (e.target.id === 'signUpUsername') {
+                    const username = e.target.value.trim();
+                    if ((username.length < 4 || username.length > 15) || !/^[A-Za-z0-9_-]+$/.test(username)) {
+                        e.preventDefault();
+                        setInputError(inputElement, 'Username must be at least four but less than sixteen characters in length and can only contain alphanumeric characters, hyphens, or underscores.');
+                    }
                 }
-            }
-            if (e.target.id === 'signUpEmail' && !/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(e.target.value)) {
-                e.preventDefault();
-                setInputError(inputElement, 'Please enter a valid email address.');
-            }
-            if (e.target.id === 'signUpPassword') {
-                const password = e.target.value.trim();
-                const strength = zxcvbn(password); // Calculate password strength
-                setPasswordStrength(strength.score); // Update passwordStrength state
-                if (password.length < 7 || password.length > 30 || strength.score < 2) {
+                if (e.target.id === 'signUpEmail' && !/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(e.target.value)) {
                     e.preventDefault();
-                    setInputError(inputElement, 'Please enter a password with a minimum of seven characters and a maximum of thirty characters that is strong enough.');
+                    setInputError(inputElement, 'Please enter a valid email address.');
                 }
-            }
-
-            if (e.target.id === 'signUpConfirmPassword') {
-                const confirmPassword = e.target.value.trim();
-                const passwordField = document.querySelector('#signUpPassword');
-                const password = passwordField.value.trim();
-
-                if (confirmPassword !== password) {
-                    e.preventDefault();
-                    setInputError(inputElement, 'Passwords do not match.');
+                if (e.target.id === 'signUpPassword') {
+                    const password = e.target.value.trim();
+                    const strength = zxcvbn(password); // Calculate password strength
+                    setPasswordStrength(strength.score); // Update passwordStrength state
+                    if (password.length < 7 || password.length > 30 || strength.score < 2) {
+                        e.preventDefault();
+                        setInputError(inputElement, 'Please enter a password with a minimum of seven characters and a maximum of thirty characters that is strong enough.');
+                    }
                 }
-            }
-        });
 
-        inputElement.addEventListener('input', (e) => {
-            clearInputError(inputElement);
+                if (e.target.id === 'signUpConfirmPassword') {
+                    const confirmPassword = e.target.value.trim();
+                    const passwordField = document.querySelector('#signUpPassword');
+                    const password = passwordField.value.trim();
+
+                    if (confirmPassword !== password) {
+                        e.preventDefault();
+                        setInputError(inputElement, 'Passwords do not match.');
+                    }
+                }
+            });
+
+            inputElement.addEventListener('input', (e) => {
+                clearInputError(inputElement);
+            })
         })
-    })
-}, []);
+    }, []);
 
-// ... (import statements and useState declarations)
 
-return (
-    <>
-        <div className="signup-body">
-            <div className="signup-container">
-                <form className='form' id='createAccount'>
-                    <h1 className="form__title">Create Account</h1>
+    return (
+        <>
+            <div className="signup-body">
+                <div className="signup-container">
+                    <form className='form' id='createAccount'>
+                        <h1 className="form__title">Create Account</h1>
 
-                    {/* Registration Success Message */}
-                    {registrationSuccess && (
-                        <p className="form__message--success">Registration successful! You can now <Link className='form__link' to='/log-in' id='linkLogin'>log in</Link>!</p>
-                    )}
+                        {/* Registration Success Message */}
+                        {registrationSuccess && (
+                            <p className="form__message--success">Registration successful! You can now <Link className='form__link' to='/log-in' id='linkLogin'>log in</Link>!</p>
+                        )}
 
-                    {/* Registration Error Message */}
-                    {!registrationSuccess && registrationError && (
-                        <p className="form__message--error">{registrationError}</p>
-                    )}
+                        {/* Registration Error Message */}
+                        {!registrationSuccess && registrationError && (
+                            <p className="form__message--error">{registrationError}</p>
+                        )}
 
-                    <div className="form__message form__message--error"></div>
-                    <div className="form__input-group">
-                        <input type="text" id='signUpUsername' autoFocus className="form__input" placeholder='Username' />
-                        <div className="form__input-error-message"></div>
-                    </div>
-
-                    <div className="form__input-group">
-                        <input type="text" id='signUpEmail' className="form__input" placeholder='Email address' />
-                        <div className="form__input-error-message"></div>
-                    </div>
-
-                    <div className="form__input-group">
-                        <input
-                            type={showPassword ? 'text' : 'password'}
-                            id='signUpPassword'
-                            className="form__input"
-                            placeholder='Password' />
-                        <div className="form__input-error-message"></div>
-
-                        {/* Password Strength Indicator */}
-                        <div className={`form__password-strength ${getPasswordStrengthClass(passwordStrength)}`}>
-                            Password Strength: {getPasswordStrengthText()}
+                        <div className="form__message form__message--error"></div>
+                        <div className="form__input-group">
+                            <input type="text" id='signUpUsername' autoFocus className="form__input" placeholder='Username' />
+                            <div className="form__input-error-message"></div>
                         </div>
-                    </div>
 
-                    <div className="form__input-group">
-                        <input
-                            type={showPassword ? 'text' : 'password'}
-                            id='signUpConfirmPassword'
-                            className="form__input"
-                            placeholder='Confirm Password' />
-                        <div className="form__input-error-message"></div>
-                        <button type='button' className='toggle-password-button' onClick={togglePasswordVisibility}>
-                            {showPassword ? 'Hide Password' : 'Show Password'}
+                        <div className="form__input-group">
+                            <input type="text" id='signUpEmail' className="form__input" placeholder='Email address' />
+                            <div className="form__input-error-message"></div>
+                        </div>
+
+                        <div className="form__input-group">
+                            <input
+                                type={showPassword ? 'text' : 'password'}
+                                id='signUpPassword'
+                                className="form__input"
+                                placeholder='Password' />
+                            <div className="form__input-error-message"></div>
+
+                            {/* Password Strength Indicator */}
+                            <div className={`form__password-strength ${getPasswordStrengthClass(passwordStrength)}`}>
+                                Password Strength: {getPasswordStrengthText()}
+                            </div>
+                        </div>
+
+                        <div className="form__input-group">
+                            <input
+                                type={showPassword ? 'text' : 'password'}
+                                id='signUpConfirmPassword'
+                                className="form__input"
+                                placeholder='Confirm Password' />
+                            <div className="form__input-error-message"></div>
+                            <button type='button' className='toggle-password-button' onClick={togglePasswordVisibility}>
+                                {showPassword ? 'Hide Password' : 'Show Password'}
+                            </button>
+                        </div>
+
+                        <button
+                            className="form__button"
+                            type='submit'
+                            id='createAcc-continueButton'
+                            onClick={handleRegistration}
+                        >
+                            Continue
                         </button>
-                    </div>
-
-                    <button
-                        className="form__button"
-                        type='submit'
-                        id='createAcc-continueButton'
-                        onClick={handleRegistration}
-                    >
-                        Continue
-                    </button>
-                    <p className="form__text">
-                        <Link className='form__link' to='/log-in' id='linkLogin'>Already have an account? Click to login</Link>
-                    </p>
-                </form>
+                        <p className="form__text">
+                            <Link className='form__link' to='/log-in' id='linkLogin'>Already have an account? Click to login</Link>
+                        </p>
+                    </form>
+                </div>
             </div>
-        </div>
-    </>
-)
+        </>
+    )
 }
