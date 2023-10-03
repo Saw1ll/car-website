@@ -15,7 +15,7 @@ export default function Services() {
                         <ul className="cards__items">
                             <CardItem
                                 src='images/michelintires.jpg'
-                                text='Michelin Pilot Sport 4 S'
+                                text="We can replace your tires so you don't have to lose out on your existing tire quality."
                                 label='-15% £97.39 (Was £114.58)'
                             />
                             <CardItem
@@ -28,7 +28,7 @@ export default function Services() {
                             <CardItem
                             src='images/monza.jpg'
                             text='You can rent cars such as the Ferrari Laferrari, Porsche GT3 or cars like the Audi RS6 Avant'
-                            label='Rent depends on car'
+                            label='Rent depends on car (Standard pricing is £540 for the day)'
                             />
                         </ul>
                     </div>
