@@ -33,7 +33,6 @@ export default function SignUp() {
         const email = document.querySelector('#signUpEmail').value;
         const password = document.querySelector('#signUpPassword').value;
 
-        // POST REQUEST
         try {
             const response = await axios.post('http://localhost:8080/api/users', {
                 username: username,
@@ -57,8 +56,8 @@ export default function SignUp() {
                 setRegistrationError('An error occurred. Please try again later.');
             }
         }
-
     }
+
 
 
     // // displays the password strength as a string rather than numbers '0, 1, 2, 3, 4' to help people understand

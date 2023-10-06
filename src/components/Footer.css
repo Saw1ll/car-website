@@ -43,6 +43,18 @@
     border: 1px solid #fff;
 }
 
+.error-message, .success-message {
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.error-message {
+    color: red;
+}
+.success-message {
+    color: #a0e060;
+}
+
 .footer-links {
     width: 100%;
     max-width: 1000px;

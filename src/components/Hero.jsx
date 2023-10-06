@@ -1,6 +1,6 @@
 // hero is a large image spanning across the webpage
 import React from "react";
-import { Button } from './Button.jsx';
+import { SignUpButton } from './SignUpButton.jsx';
 import '../App.css';
 import './Hero.css';
 
@@ -11,16 +11,16 @@ function Hero() {
             <h1>THIS COULD BE YOU!</h1>
             <p>What are you waiting for?</p>
             <div className="hero-btns">
-                <Button className="btns"
+                <SignUpButton className="btns"
                     buttonStyle="btn--outline"
                     buttonSize='btn--large'
-                >BEGIN YOUR JOURNEY!</Button>
+                >BEGIN YOUR JOURNEY!</SignUpButton>
 
-                <Button
+                <SignUpButton
                     className="btns"
                     buttonStyle="btn--primary"
                     buttonSize='btn--large'
-                >WATCH TRAILER!<div className="play-circle" /></Button>
+                >WATCH TRAILER!<div className="play-circle" /></SignUpButton>
             </div>
         </div>
     )
