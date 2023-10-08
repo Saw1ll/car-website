@@ -1,6 +1,6 @@
 import React from "react";
 import '../../App.css';
-import Footer from "../Footer";
+import Footer from "../components/jsx/Footer.jsx";
 
 export default function Products() {
     return (

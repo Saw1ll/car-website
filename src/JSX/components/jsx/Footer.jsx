@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import './Footer.css';
+import '../css/footer.css';
 import { Link } from 'react-router-dom';
-import { SubscribeButton } from './SubscribeButton';
+import { SubscribeButton } from './SubscribeButton.jsx';
 import axios from 'axios';
 
 function Footer() {

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import zxcvbn from "zxcvbn"; // Import the zxcvbn library
 import axios from 'axios';
 import '../../App.css';
-import '../SignUp.css';
+import '../components/css/signup.css';
 
 export default function SignUp() {
     const [showPassword, setShowPassword] = useState(false);

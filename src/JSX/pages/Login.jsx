@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import '../../App.css';
-import '../SignUp.css';
+import '../components/css/signup.css';
 
 function setFormMessage(formElement, type, message) {
     const messageElement = formElement.querySelector('.form__message');

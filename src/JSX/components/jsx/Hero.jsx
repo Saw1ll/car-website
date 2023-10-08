@@ -1,8 +1,8 @@
 // hero is a large image spanning across the webpage
 import React from "react";
 import { SignUpButton } from './SignUpButton.jsx';
-import '../App.css';
-import './Hero.css';
+import '../../../App.css';
+import '../css/hero.css';
 
 function Hero() {
     return (

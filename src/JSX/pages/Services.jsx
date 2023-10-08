@@ -1,8 +1,8 @@
 import React from "react";
 import '../../App.css';
-import Footer from "../Footer";
-import CardItem from "../CardItem";
-import '../Cards.css';
+import Footer from "../components/jsx/Footer.jsx";
+import CardItem from "../components/jsx/CardItem.jsx";
+import '../components/css/cards.css';
 
 export default function Services() {
     return (

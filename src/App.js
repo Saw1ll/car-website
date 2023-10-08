@@ -1,12 +1,12 @@
 import React from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Navbar from './components/Navbar.jsx';
-import Home from './components/page/Home.jsx';
-import Products from './components/page/Products.jsx';
-import SignUp from './components/page/SignUp.jsx';
-import Services from './components/page/Services.jsx';
-import Login from './components/page/Login.jsx';
+import Navbar from './JSX/components/jsx/Navbar.jsx';
+import Home from './JSX/pages/Home.jsx';
+import Products from './JSX/pages/Products.jsx';
+import SignUp from './JSX/pages/SignUp.jsx';
+import Services from './JSX/pages/Services.jsx';
+import Login from './JSX/pages/Login.jsx';
 
 function App() {
   return (
